@@ -103,12 +103,12 @@ function moveButton(e) {
   yesScale += 0.15;
   yesBtn.style.transform = `scale(${yesScale})`;
 
-  if (noCount < 5) {
-    counter.innerHTML = `Trying to say no? Attempt: ${noCount} 😏`;
-  } else if (noCount < 8) {
-    counter.innerHTML = `Still trying? Just press YES already 🙃`;
+  if (noCount < 3) {
+    counter.innerHTML = `KOK GAMAU SIHHH? PENCET YESSS ATUHH😏`;
+  } else if (noCount < 6) {
+    counter.innerHTML = `PENCET YESSS GAAA!!!🙃`;
   } else {
-    counter.innerHTML = `Okay this is getting suspicious 🤨💘`;
+    counter.innerHTML = `AYOOO DONGGG MANIEESSS, NANGIS NIH 🤨💘`;
   }
 }
 
