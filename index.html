@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine 💖</title>
+<style>
+body {
+  background: linear-gradient(135deg, #ff9a9e, #fecfef);
+  font-family: Arial, sans-serif;
+  text-align: center;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  color: white;
+  font-size: 2.5em;
+  margin-bottom: 30px;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 10px;
+}
+
+#yesBtn {
+  background-color: #ff4d6d;
+  color: white;
+}
+
+#noBtn {
+  background-color: white;
+  color: #ff4d6d;
+  position: absolute;
+}
+
+.message {
+  font-size: 2em;
+  color: white;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<h1>Will you be my Valentine, Ruth Olivia Widianto? 💖</h1>
+
+<button id="yesBtn">YES 💕</button>
+<button id="noBtn">NO 🙈</button>
+
+<div class="message" id="message"></div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
+
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 50);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+  yesBtn.style.transform = "scale(1.2)";
+});
+
+yesBtn.addEventListener("click", () => {
+  document.body.innerHTML = `
+    <h1 style="color:white;">YAYYY 💖💖💖</h1>
+    <p style="color:white; font-size:24px;">You just made my day, Ruth 😍</p>
+  `;
+});
+</script>
+
+</body>
+</html>
