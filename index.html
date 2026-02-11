@@ -10,27 +10,26 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #ff9a9e, #fecfef);
-  min-height: 100svh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  min-height: 100vh;
   text-align: center;
-  padding: 20px;
+  padding-top: 80px; /* JANGAN center vertikal */
+  padding-bottom: 120px; /* kasih ruang bawah */
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 h1 {
   color: white;
   font-size: 1.8em;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .button-container {
   display: flex;
-  gap: 15px;
   justify-content: center;
-  align-items: center;
+  gap: 15px;
+  position: relative;
+  z-index: 2;
 }
 
 button {
@@ -39,7 +38,7 @@ button {
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: transform 0.2s ease;
 }
 
 #yesBtn {
@@ -54,7 +53,7 @@ button {
 
 #counter {
   color: white;
-  margin-top: 20px;
+  margin-top: 30px;
   font-size: 16px;
 }
 
@@ -65,12 +64,8 @@ canvas {
   pointer-events: none;
 }
 
-/* Responsive kecil */
 @media (max-width: 400px) {
-  h1 {
-    font-size: 1.5em;
-  }
-
+  h1 { font-size: 1.5em; }
   button {
     font-size: 16px;
     padding: 12px 24px;
@@ -103,7 +98,6 @@ let isFirstMove = true;
 function moveButton(e) {
   e.preventDefault();
 
-  // Saat pertama kali kabur, ubah jadi fixed
   if (isFirstMove) {
     noBtn.style.position = "fixed";
     isFirstMove = false;
@@ -113,7 +107,7 @@ function moveButton(e) {
   const buttonHeight = noBtn.offsetHeight;
 
   const maxX = window.innerWidth - buttonWidth;
-  const maxY = window.innerHeight - buttonHeight;
+  const maxY = window.innerHeight - buttonHeight - 20;
 
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
@@ -126,29 +120,24 @@ function moveButton(e) {
   yesBtn.style.transform = `scale(${yesScale})`;
 
   if (noCount < 3) {
-    counter.innerHTML = `KOK GAMAU SIHHH? PENCET YESSS ATUHH 😏`;
+    counter.innerHTML = `KOK GAMAU SIHHH? 😏`;
   } else if (noCount < 6) {
-    counter.innerHTML = `PENCET YESSS GAAA!!! 🙃`;
+    counter.innerHTML = `PENCET YESSS GAAA 🙃`;
   } else {
-    counter.innerHTML = `AYOOO DONGGG MANIEESSS, NANGIS NIH 🤨💘`;
+    counter.innerHTML = `AYOOO DONGGG MANIEESSS 💘`;
   }
 }
 
-// Hover (laptop)
 noBtn.addEventListener("mouseenter", moveButton);
-
-// Click (desktop)
 noBtn.addEventListener("mousedown", moveButton);
 noBtn.addEventListener("click", moveButton);
-
-// Touch (mobile)
 noBtn.addEventListener("touchstart", moveButton);
 
 yesBtn.addEventListener("click", () => {
   document.body.innerHTML = `
-    <h1 style="color:white;">YAYYY 💖💖💖</h1>
+    <h1 style="color:white;">YAYYY 💖</h1>
     <p style="color:white; font-size:22px;">
-      You just made my day, Ruth 😍<br>
+      You just made my day 😍<br>
       Best Valentine ever 💕
     </p>
     <canvas id="confetti"></canvas>
@@ -164,7 +153,7 @@ function startConfetti() {
 
   let pieces = [];
 
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < 150; i++) {
     pieces.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
