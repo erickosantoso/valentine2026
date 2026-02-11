@@ -1,55 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Be My Valentine 💖</title>
+
 <style>
 body {
-  background: linear-gradient(135deg, #ff9a9e, #fecfef);
+  margin: 0;
   font-family: Arial, sans-serif;
-  text-align: center;
+  background: linear-gradient(135deg, #ff9a9e, #fecfef);
   height: 100vh;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  text-align: center;
 }
 
 h1 {
   color: white;
-  font-size: 2.5em;
-  margin-bottom: 30px;
+  font-size: 2em;
+  padding: 20px;
 }
 
 button {
   padding: 15px 30px;
   font-size: 18px;
   border: none;
-  border-radius: 25px;
+  border-radius: 30px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.25s ease;
   margin: 10px;
 }
 
 #yesBtn {
   background-color: #ff4d6d;
   color: white;
+  z-index: 2;
 }
 
 #noBtn {
   background-color: white;
   color: #ff4d6d;
-  position: absolute;
+  position: fixed;
+  left: 50%;
+  top: 65%;
+  transform: translate(-50%, -50%);
 }
 
-.message {
-  font-size: 2em;
+#counter {
   color: white;
-  margin-top: 20px;
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 </style>
 </head>
+
 <body>
 
 <h1>Will you be my Valentine, Ruth Olivia Widianto? 💖</h1>
@@ -57,27 +72,110 @@ button {
 <button id="yesBtn">YES 💕</button>
 <button id="noBtn">NO 🙈</button>
 
-<div class="message" id="message"></div>
+<div id="counter"></div>
+<canvas id="confetti"></canvas>
 
 <script>
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
-const message = document.getElementById("message");
+const counter = document.getElementById("counter");
 
-noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 50);
+let noCount = 0;
+let yesScale = 1;
+
+function moveButton(e) {
+  e.preventDefault();
+
+  const buttonWidth = noBtn.offsetWidth;
+  const buttonHeight = noBtn.offsetHeight;
+
+  const maxX = window.innerWidth - buttonWidth;
+  const maxY = window.innerHeight - buttonHeight;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-  yesBtn.style.transform = "scale(1.2)";
-});
+  noBtn.style.transform = "none";
+
+  noCount++;
+  yesScale += 0.15;
+  yesBtn.style.transform = `scale(${yesScale})`;
+
+  if (noCount < 5) {
+    counter.innerHTML = `Trying to say no? Attempt: ${noCount} 😏`;
+  } else if (noCount < 8) {
+    counter.innerHTML = `Still trying? Just press YES already 🙃`;
+  } else {
+    counter.innerHTML = `Okay this is getting suspicious 🤨💘`;
+  }
+}
+
+// Laptop hover
+noBtn.addEventListener("mouseenter", moveButton);
+
+// Laptop click
+noBtn.addEventListener("mousedown", moveButton);
+noBtn.addEventListener("click", moveButton);
+
+// Mobile
+noBtn.addEventListener("touchstart", moveButton);
 
 yesBtn.addEventListener("click", () => {
   document.body.innerHTML = `
     <h1 style="color:white;">YAYYY 💖💖💖</h1>
-    <p style="color:white; font-size:24px;">You just made my day, Ruth 😍</p>
+    <p style="color:white; font-size:22px;">
+      You just made my day, Ruth 😍<br>
+      Best Valentine ever 💕
+    </p>
+    <canvas id="confetti"></canvas>
   `;
+  startConfetti();
 });
+
+function startConfetti() {
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let pieces = [];
+
+  for (let i = 0; i < 200; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 6 + 2,
+      speed: Math.random() * 3 + 1
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    pieces.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  function update() {
+    pieces.forEach(p => {
+      p.y += p.speed;
+      if (p.y > canvas.height) p.y = 0;
+    });
+  }
+
+  function loop() {
+    draw();
+    update();
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+}
 </script>
 
 </body>
