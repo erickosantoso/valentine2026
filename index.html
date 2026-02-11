@@ -10,19 +10,27 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #ff9a9e, #fecfef);
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 h1 {
   color: white;
-  font-size: 2em;
-  padding: 20px;
+  font-size: 1.8em;
+  margin-bottom: 30px;
+}
+
+.button-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
 }
 
 button {
@@ -32,27 +40,21 @@ button {
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.25s ease;
-  margin: 10px;
 }
 
 #yesBtn {
   background-color: #ff4d6d;
   color: white;
-  z-index: 2;
 }
 
 #noBtn {
   background-color: white;
   color: #ff4d6d;
-  position: fixed;
-  left: 50%;
-  top: 65%;
-  transform: translate(-50%, -50%);
 }
 
 #counter {
   color: white;
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 16px;
 }
 
@@ -62,6 +64,18 @@ canvas {
   left: 0;
   pointer-events: none;
 }
+
+/* Responsive kecil */
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 12px 24px;
+  }
+}
 </style>
 </head>
 
@@ -69,8 +83,10 @@ canvas {
 
 <h1>Will you be my Valentine, Ruth Olivia Widianto? 💖</h1>
 
-<button id="yesBtn">YES 💕</button>
-<button id="noBtn">NO 🙈</button>
+<div class="button-container">
+  <button id="yesBtn">YES 💕</button>
+  <button id="noBtn">NO 🙈</button>
+</div>
 
 <div id="counter"></div>
 <canvas id="confetti"></canvas>
@@ -82,9 +98,16 @@ const counter = document.getElementById("counter");
 
 let noCount = 0;
 let yesScale = 1;
+let isFirstMove = true;
 
 function moveButton(e) {
   e.preventDefault();
+
+  // Saat pertama kali kabur, ubah jadi fixed
+  if (isFirstMove) {
+    noBtn.style.position = "fixed";
+    isFirstMove = false;
+  }
 
   const buttonWidth = noBtn.offsetWidth;
   const buttonHeight = noBtn.offsetHeight;
@@ -97,29 +120,28 @@ function moveButton(e) {
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-  noBtn.style.transform = "none";
 
   noCount++;
   yesScale += 0.15;
   yesBtn.style.transform = `scale(${yesScale})`;
 
   if (noCount < 3) {
-    counter.innerHTML = `KOK GAMAU SIHHH? PENCET YESSS ATUHH😏`;
+    counter.innerHTML = `KOK GAMAU SIHHH? PENCET YESSS ATUHH 😏`;
   } else if (noCount < 6) {
-    counter.innerHTML = `PENCET YESSS GAAA!!!🙃`;
+    counter.innerHTML = `PENCET YESSS GAAA!!! 🙃`;
   } else {
     counter.innerHTML = `AYOOO DONGGG MANIEESSS, NANGIS NIH 🤨💘`;
   }
 }
 
-// Laptop hover
+// Hover (laptop)
 noBtn.addEventListener("mouseenter", moveButton);
 
-// Laptop click
+// Click (desktop)
 noBtn.addEventListener("mousedown", moveButton);
 noBtn.addEventListener("click", moveButton);
 
-// Mobile
+// Touch (mobile)
 noBtn.addEventListener("touchstart", moveButton);
 
 yesBtn.addEventListener("click", () => {
